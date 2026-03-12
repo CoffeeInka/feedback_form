@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Client Reflection · Self-Mastery Practice</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--p:#edf0eb;--d:#2c2820;--m:#4a4a40;--w:#7a7a6a;--a:#5a6650;--l:rgba(80,80,60,0.13)}
+body{background:radial-gradient(ellipse at 15% 20%,rgba(196,214,182,.55) 0%,transparent 50%),radial-gradient(ellipse at 85% 15%,rgba(210,195,175,.45) 0%,transparent 45%),radial-gradient(ellipse at 70% 80%,rgba(182,200,195,.5) 0%,transparent 50%),radial-gradient(ellipse at 20% 75%,rgba(220,208,190,.45) 0%,transparent 45%),#e8ebe3;font-family:"Jost",sans-serif;color:var(--d);min-height:100vh;display:flex;flex-direction:column}
+.bar{position:fixed;top:0;left:0;height:2px;background:var(--a);transition:width .5s;z-index:100;width:0}
+.hdr{padding:20px 48px;display:flex;align-items:center;justify-content:space-between;background:rgba(237,240,235,.93);backdrop-filter:blur(6px);border-bottom:.5px solid var(--l)}
+.hl{display:flex;align-items:center;gap:10px}
+.hl svg{width:22px;height:26px}
+.hl span{font-weight:200;font-size:9.5px;letter-spacing:.24em;text-transform:uppercase;color:var(--w)}
+.lt{display:flex;gap:4px}
+.lb{font-weight:200;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--w);background:none;border:.5px solid var(--l);padding:5px 10px;cursor:pointer;font-family:"Jost",sans-serif;transition:all .2s}
+.lb.on{background:var(--d);color:var(--p);border-color:var(--d)}
+.fc{flex:1;display:flex;align-items:center;justify-content:center;padding:48px 24px}
+.sl{display:none;max-width:600px;width:100%;background:rgba(237,240,235,.94);backdrop-filter:blur(8px);padding:52px 56px;border:.5px solid rgba(100,110,90,.16)}
+.sl.on{display:block;animation:fu .4s ease forwards}
+@keyframes fu{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.ll{width:38px;height:44px;margin-bottom:26px;display:block}
+.qn{font-weight:200;font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--w);margin-bottom:16px;font-family:"Jost",sans-serif}
+.qt{font-family:"Cormorant Garamond",serif;font-weight:300;font-size:29px;line-height:1.35;color:var(--d);margin-bottom:8px}
+.qs{font-weight:200;font-size:12px;color:var(--w);margin-bottom:30px;letter-spacing:.04em;line-height:1.75;font-family:"Jost",sans-serif}
+.wt{font-weight:200;font-size:11px;letter-spacing:.28em;text-transform:uppercase;color:var(--w);margin-bottom:20px;font-family:"Jost",sans-serif}
+.wb{font-family:"Cormorant Garamond",serif;font-weight:300;font-size:22px;line-height:1.65;color:var(--m);margin-bottom:36px}
+.dv{width:32px;height:.5px;background:var(--a);margin-bottom:28px}
+textarea,input[type=text]{width:100%;background:transparent;border:none;border-bottom:1px solid var(--l);padding:10px 0;font-family:"Jost",sans-serif;font-weight:300;font-size:14.5px;color:var(--d);outline:none;resize:none;transition:border-color .3s;line-height:1.8}
+textarea{min-height:105px}
+textarea:focus,input:focus{border-bottom-color:var(--a)}
+textarea::placeholder,input::placeholder{color:var(--w);opacity:.42;font-weight:200;font-size:13px}
+.br{display:flex;align-items:center;gap:16px;margin-top:30px;flex-wrap:wrap}
+.bn{font-family:"Jost",sans-serif;font-weight:300;font-size:9.5px;letter-spacing:.22em;text-transform:uppercase;color:var(--p);background:var(--d);border:none;padding:12px 28px;cursor:pointer;transition:background .25s,transform .15s}
+.bn:hover{background:var(--a);transform:translateY(-1px)}
+.bk{font-family:"Jost",sans-serif;font-weight:200;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--w);background:none;border:.5px solid var(--l);padding:11px 20px;cursor:pointer;transition:all .2s}
+.bk:hover{border-color:var(--w)}
+.sk{font-family:"Jost",sans-serif;font-weight:200;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--w);background:none;border:none;cursor:pointer;text-decoration:underline;text-underline-offset:3px;margin-left:auto}
+.ol{font-weight:200;font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--w);margin-top:24px;margin-bottom:6px;font-family:"Jost",sans-serif}
+.ftr{padding:18px 48px;display:flex;justify-content:space-between;align-items:center;border-top:.5px solid var(--l);background:rgba(237,240,235,.9)}
+.sc{font-weight:200;font-size:9.5px;letter-spacing:.2em;color:var(--w);text-transform:uppercase;font-family:"Jost",sans-serif}
+.sl a{font-family:"Cormorant Garamond",serif;font-style:italic;font-size:12px;color:var(--w);text-decoration:none;border-bottom:.5px solid var(--l);padding-bottom:2px}
+#opts label:hover{border-color:var(--a)}
+#opts label:has(input:checked){border-color:var(--a);background:rgba(90,102,80,.04)}
+@media(max-width:600px){.sl{padding:36px 28px}.qt{font-size:24px}.wb{font-size:18px}.hdr{padding:18px 20px}.hl span{display:none}.ftr{padding:14px 20px}}
+</style>
+</head>
+<body>
+
+<svg style="display:none">
+<symbol id="lf" viewBox="0 0 80 96">
+<path d="M40 10 Q42 4 44 2" fill="none" stroke="#4a6838" stroke-width="1.8" stroke-linecap="round"/>
+<path d="M40 88 C40 88 8 62 8 36 C8 20 20 12 32 14 C36 15 38 16 40 18 C42 16 44 15 48 14 C60 12 72 20 72 36 C72 62 40 88 40 88Z" fill="#7a9468"/>
+<path d="M40 88 C40 88 8 62 8 36 C8 20 20 12 32 14 C36 15 38 16 40 18" fill="#90a87e" opacity="0.6"/>
+<path d="M40 18 L40 82" fill="none" stroke="#4a6838" stroke-width="1" opacity="0.7" stroke-linecap="round"/>
+<path d="M40 32 Q28 38 18 38" fill="none" stroke="#4a6838" stroke-width="0.7" opacity="0.55" stroke-linecap="round"/>
+<path d="M40 44 Q26 50 16 52" fill="none" stroke="#4a6838" stroke-width="0.7" opacity="0.5" stroke-linecap="round"/>
+<path d="M40 56 Q28 62 20 64" fill="none" stroke="#4a6838" stroke-width="0.65" opacity="0.45" stroke-linecap="round"/>
+<path d="M40 32 Q52 38 62 38" fill="none" stroke="#4a6838" stroke-width="0.7" opacity="0.55" stroke-linecap="round"/>
+<path d="M40 44 Q54 50 64 52" fill="none" stroke="#4a6838" stroke-width="0.7" opacity="0.5" stroke-linecap="round"/>
+<path d="M40 56 Q52 62 60 64" fill="none" stroke="#4a6838" stroke-width="0.65" opacity="0.45" stroke-linecap="round"/>
+</symbol>
+</svg>
+
+<div class="bar" id="bar"></div>
+
+<div class="hdr">
+  <div class="hl">
+    <svg><use href="#lf"/></svg>
+    <span id="hdrname">Self-Mastery Practice · Inna Shevchenko</span>
+  </div>
+  <div class="lt">
+    <button class="lb on" id="ben" onclick="setLang('en')">EN</button>
+    <button class="lb" id="bru" onclick="setLang('ru')">RU</button>
+  </div>
+</div>
+
+<div class="fc">
+
+<div class="sl on" id="s0">
+  <svg class="ll"><use href="#lf"/></svg>
+  <div class="wt" id="t0">Client Reflection</div>
+  <div class="dv"></div>
+  <div class="wb" id="b0">Hi! This is Inna from SelfMastery.Art — we worked together not so long ago. I'm collecting material for case studies to show the results of my work. Please take a few minutes to answer some questions — it means a lot to me!</div>
+  <div class="br"><button class="bn" onclick="gt(1)" id="btn0">Begin →</button></div>
+</div>
+
+<div class="sl" id="s1">
+  <div class="qn">01 / 07</div>
+  <div class="qt" id="t1">Please tell me what was going on before you decided to reach out. What situation were you in — what problems or challenges were you facing?</div>
+  <div class="qs" id="s1s"></div>
+  <textarea id="q1" placeholder="Take your time…" rows="5"></textarea>
+  <div class="br">
+    <button class="bn" onclick="gt(2)" id="btn1">Continue →</button>
+    <button class="bk" onclick="gt(0)" id="bk1">← Back</button>
+    <button class="sk" onclick="gt(2)" id="sk1">Skip</button>
+  </div>
+</div>
+
+<div class="sl" id="s2">
+  <div class="qn">02 / 07</div>
+  <div class="qt" id="t2">Had you worked with a specialist before? Did you have any doubts or concerns before reaching out to me? If yes — please share what they were.</div>
+  <div class="qs" id="s2s"></div>
+  <textarea id="q2" placeholder="Anything that comes to mind…" rows="5"></textarea>
+  <div class="br">
+    <button class="bn" onclick="gt(3)" id="btn2">Continue →</button>
+    <button class="bk" onclick="gt(1)" id="bk2">← Back</button>
+    <button class="sk" onclick="gt(3)" id="sk2">Skip</button>
+  </div>
+</div>
+
+<div class="sl" id="s3">
+  <div class="qn">03 / 07</div>
+  <div class="qt" id="t3">What happened that made you finally decide to reach out? If you remember — describe the situation, your emotions and thoughts.</div>
+  <div class="qs" id="s3s"></div>
+  <textarea id="q3" placeholder="Even a small moment matters…" rows="5"></textarea>
+  <div class="br">
+    <button class="bn" onclick="gt(4)" id="btn3">Continue →</button>
+    <button class="bk" onclick="gt(2)" id="bk3">← Back</button>
+    <button class="sk" onclick="gt(4)" id="sk3">Skip</button>
+  </div>
+</div>
+
+<div class="sl" id="s4">
+  <div class="qn">04 / 07</div>
+  <div class="qt" id="t4">What result were you hoping for from our work together? Where did you want to arrive?</div>
+  <div class="qs" id="s4s"></div>
+  <textarea id="q4" placeholder="What did you want to change or feel?" rows="5"></textarea>
+  <div class="br">
+    <button class="bn" onclick="gt(5)" id="btn4">Continue →</button>
+    <button class="bk" onclick="gt(3)" id="bk4">← Back</button>
+    <button class="sk" onclick="gt(5)" id="sk4">Skip</button>
+  </div>
+</div>
+
+<div class="sl" id="s5">
+  <div class="qn">05 / 07</div>
+  <div class="qt" id="t5">Was it comfortable working with me? Was there anything difficult, uncomfortable, or unclear?</div>
+  <div class="qs" id="s5s"></div>
+  <textarea id="q5" placeholder="Honestly…" rows="5"></textarea>
+  <div class="br">
+    <button class="bn" onclick="gt(6)" id="btn5">Continue →</button>
+    <button class="bk" onclick="gt(4)" id="bk5">← Back</button>
+    <button class="sk" onclick="gt(6)" id="sk5">Skip</button>
+  </div>
+</div>
+
+<div class="sl" id="s6">
+  <div class="qn">06 / 07</div>
+  <div class="qt" id="t6">Did any insights or realisations come up during our work? Were you able to make sense of your feelings, sensations, or actions?</div>
+  <div class="qs" id="s6s"></div>
+  <textarea id="q6" placeholder="Even something small…" rows="5"></textarea>
+  <div class="br">
+    <button class="bn" onclick="gt(7)" id="btn6">Continue →</button>
+    <button class="bk" onclick="gt(5)" id="bk6">← Back</button>
+    <button class="sk" onclick="gt(7)" id="sk6">Skip</button>
+  </div>
+</div>
+
+<div class="sl" id="s7">
+  <div class="qn">07 / 07</div>
+  <div class="qt" id="t7">Please tell me — what results did you achieve after our work? Did the situation you came with actually change? Are you happy with what we did together?</div>
+  <div class="qs" id="s7s"></div>
+  <textarea id="q8" placeholder="In your own words…" rows="4"></textarea>
+  <div class="ol" id="ol7">Your name (optional)</div>
+  <input type="text" id="q7name" placeholder="First name only is fine">
+  <div class="ol" style="margin-top:20px" id="ol7ph">Your photo or avatar (optional)</div>
+  <div style="margin-top:8px">
+    <label style="display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-family:'Jost',sans-serif;font-weight:200;font-size:11px;color:var(--w);letter-spacing:.06em;border:.5px solid var(--l);padding:10px 16px;transition:border-color .2s" id="photoLabel">
+      <span>＋</span> <span id="photoLabelTxt">Attach a photo</span>
+      <input type="file" id="q7photo" accept="image/*" style="display:none" onchange="photoChosen(this)">
+    </label>
+  </div>
+  <div class="br">
+    <button class="bn" onclick="gt(8)" id="btn7">Continue →</button>
+    <button class="bk" onclick="gt(6)" id="bk7">← Back</button>
+  </div>
+</div>
+
+<div class="sl" id="s8">
+  <div class="qn" id="qn8">One more thing</div>
+  <div class="qt" id="t8">What would you say to someone who hasn't decided yet?</div>
+  <div class="qs" id="s8s">Someone who is thinking about this work but still hesitating.</div>
+  <textarea id="q9" placeholder="Speak to them directly if you like…" rows="5"></textarea>
+  <div class="br">
+    <button class="bn" onclick="gt(9)" id="btn8">Continue →</button>
+    <button class="bk" onclick="gt(7)" id="bk8">← Back</button>
+    <button class="sk" onclick="gt(9)" id="sk8">Skip</button>
+  </div>
+</div>
+
+<div class="sl" id="s9">
+  <div class="qn" id="qn9">Optional · Almost done</div>
+  <div class="qt" id="t9">One more thing! Are you ready for an extra step 🤩?!</div>
+
+  <div id="opts" style="display:flex;flex-direction:column;gap:10px;margin-bottom:28px">
+    <label style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:.5px solid var(--l);cursor:pointer;transition:border-color .2s">
+      <input type="radio" name="fmt" value="video-call" style="margin-top:3px;accent-color:var(--a)">
+      <span><span style="font-size:15px">📹</span> <strong style="font-weight:300;font-family:'Jost',sans-serif;letter-spacing:.04em">Video call with me</strong> <span style="color:var(--w);font-size:11px">(5–10 min, recorded)</span><br><span style="font-size:11px;color:var(--w);font-weight:200">Same questions, we go through them together over video</span></span>
+    </label>
+    <label style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:.5px solid var(--l);cursor:pointer;transition:border-color .2s">
+      <input type="radio" name="fmt" value="voice-call" style="margin-top:3px;accent-color:var(--a)">
+      <span><span style="font-size:15px">🎙️</span> <strong style="font-weight:300;font-family:'Jost',sans-serif;letter-spacing:.04em">Voice call with me</strong> <span style="color:var(--w);font-size:11px">(5–10 min, recorded)</span><br><span style="font-size:11px;color:var(--w);font-weight:200">Same questions, audio only</span></span>
+    </label>
+    <label style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:.5px solid var(--l);cursor:pointer;transition:border-color .2s">
+      <input type="radio" name="fmt" value="self-video" style="margin-top:3px;accent-color:var(--a)">
+      <span><span style="font-size:15px">📹</span> <strong style="font-weight:300;font-family:'Jost',sans-serif;letter-spacing:.04em">Self-recorded video</strong> <span style="color:var(--w);font-size:11px">(30–60 sec)</span><br><span style="font-size:11px;color:var(--w);font-weight:200">Record yourself and send via WhatsApp or Telegram</span></span>
+    </label>
+    <label style="display:flex;align-items:flex-start;gap:12px;padding:14px 16px;border:.5px solid var(--l);cursor:pointer;transition:border-color .2s">
+      <input type="radio" name="fmt" value="text" style="margin-top:3px;accent-color:var(--a)">
+      <span><span style="font-size:15px">✍️</span> <strong style="font-weight:300;font-family:'Jost',sans-serif;letter-spacing:.04em">Just this text</strong><br><span style="font-size:11px;color:var(--w);font-weight:200">What I've written above is enough</span></span>
+    </label>
+  </div>
+
+  <label style="display:flex;align-items:flex-start;gap:12px;cursor:pointer">
+    <input type="checkbox" id="consent" style="margin-top:3px;accent-color:var(--a)">
+    <span id="consentlabel" style="font-family:'Jost',sans-serif;font-weight:200;font-size:11px;color:var(--w);line-height:1.7;letter-spacing:.03em">I agree that Inna may use my reflection (anonymously if no name is given) on her website or social media.</span>
+  </label>
+
+  <div class="br" style="margin-top:28px">
+    <button class="bn" onclick="send()" id="btn9">Send my answers →</button>
+    <button class="bk" onclick="gt(8)" id="bk9">← Back</button>
+  </div>
+</div>
+
+<div class="sl" id="sth">
+  <svg class="ll"><use href="#lf"/></svg>
+  <div class="wt" id="tth">Done!</div>
+  <div class="dv"></div>
+  <div class="wb" id="bth">Thank you so much for taking the time! — Inna</div>
+  <a href="https://selfmastery.art">selfmastery.art</a>
+</div>
+
+</div>
+
+<div class="ftr" id="ftr">
+  <div class="sc" id="sc"></div>
+</div>
+
+<script>
+var cur = 0;
+var total = 9;
+var lang = 'en';
+
+window.addEventListener('DOMContentLoaded', function(){ setLang('en'); });
+
+function photoChosen(input) {
+  var lbl = document.getElementById('photoLabelTxt');
+  if (input.files && input.files[0]) { lbl.textContent = input.files[0].name; }
+}
+
+var tx = {
+  en: {
+    t0:'Client Reflection',
+    b0:"Hi! This is Inna from SelfMastery.Art — we worked together not so long ago. I'm collecting material for case studies to show the results of my work. Please take a few minutes to answer some questions — it means a lot to me!",
+    btn0:'Begin →',
+    t1:'Please tell me what was going on before you decided to reach out.', s1s:'What situation were you in — what problems or challenges were you facing?', btn1:'Continue →', bk1:'← Back', sk1:'Skip', q1:'Take your time…',
+    t2:'Had you worked with a specialist before? Did you have any doubts or concerns before reaching out to me?', s2s:'If yes — please share what they were.', btn2:'Continue →', bk2:'← Back', sk2:'Skip', q2:'Anything that comes to mind…',
+    t3:'What happened that made you finally decide to reach out?', s3s:'If you remember — describe the situation, your emotions and thoughts.', btn3:'Continue →', bk3:'← Back', sk3:'Skip', q3:'Even a small moment matters…',
+    t4:'What result were you hoping for from our work together?', s4s:'Where did you want to arrive?', btn4:'Continue →', bk4:'← Back', sk4:'Skip', q4:'What did you want to change or feel?',
+    t5:'Was it comfortable working with me?', s5s:'Was there anything difficult, uncomfortable, or unclear?', btn5:'Continue →', bk5:'← Back', sk5:'Skip', q5:'Honestly…',
+    t6:'Did any insights or realisations come up during our work?', s6s:'Were you able to make sense of your feelings, sensations, or actions?', btn6:'Continue →', bk6:'← Back', sk6:'Skip', q6:'Even something small…',
+    t7:'Please tell me — what results did you achieve after our work?', s7s:'Did the situation you came with actually change? Are you happy with what we did together?', btn7:'Continue →', bk7:'← Back', q8:'In your own words…',
+    ol7:'Your name (optional)', q7name:'First name only is fine',
+    ol7ph:'Your photo or avatar (optional)', photoLabelTxt:'Attach a photo',
+    qn8:'One more thing', t8:'What would you say to someone who hasn\'t decided yet?', s8s:'Someone who is thinking about this work but still hesitating.', btn8:'Continue →', bk8:'← Back', sk8:'Skip', q9:'Speak to them directly if you like…',
+    qn9:'Optional · Almost done', t9:'One more thing! Are you ready for an extra step 🤩?!',
+    consentlabel:'I agree that Inna may use my reflection (anonymously if no name is given) on her website or social media.',
+    btn9:'Send my answers →', bk9:'← Back',
+    tth:'Done!', bth:'Thank you so much for taking the time! — Inna',
+    hdrname:'Self-Mastery Practice · Inna Shevchenko'
+  },
+  ru: {
+    t0:'Отзыв клиента',
+    b0:'Привет! Это Инна, SelfMastery.Art, мы работали с вами не так давно. Я собираю материал для кейсов, чтобы показать результат своей работы. Пожалуйста, ответьте на несколько вопросов, это очень важно для меня!',
+    btn0:'Начать →',
+    t1:'Расскажите, пожалуйста, что было до того, как вы решили обратиться ко мне.', s1s:'В какой ситуации вы были, какие проблемы и задачи стояли перед вами?', btn1:'Продолжить →', bk1:'← Назад', sk1:'Пропустить', q1:'Не торопитесь…',
+    t2:'Вы уже обращались раньше к специалисту? Были ли у вас сомнения или опасения перед тем, как написать мне?', s2s:'Если да — расскажите, в чём именно.', btn2:'Продолжить →', bk2:'← Назад', sk2:'Пропустить', q2:'Всё, что приходит в голову…',
+    t3:'Что произошло, что вы всё же решились обратиться ко мне?', s3s:'Если помните — опишите ситуацию, ваши эмоции и мысли.', btn3:'Продолжить →', bk3:'← Назад', sk3:'Пропустить', q3:'Даже маленький момент важен…',
+    t4:'Какого результата вы ждали от нашей работы?', s4s:'К чему хотели прийти?', btn4:'Продолжить →', bk4:'← Назад', sk4:'Пропустить', q4:'К чему хотели прийти?',
+    t5:'Вам было комфортно работать со мной?', s5s:'Было ли что-то сложное, неудобное или непонятное?', btn5:'Продолжить →', bk5:'← Назад', sk5:'Пропустить', q5:'Честно…',
+    t6:'Во время нашей работы возникали инсайты или озарения?', s6s:'Вы смогли разобраться в своих ощущениях, чувствах и поступках?', btn6:'Продолжить →', bk6:'← Назад', sk6:'Пропустить', q6:'Даже что-то маленькое…',
+    t7:'Расскажите, пожалуйста, каких результатов вы достигли после нашей работы?', s7s:'Изменилась ли та ситуация, с которой вы пришли? Вы довольны проделанной нами работой?', btn7:'Продолжить →', bk7:'← Назад', q8:'Своими словами…',
+    ol7:'Ваше имя (по желанию)', q7name:'Можно только имя',
+    ol7ph:'Ваше фото или аватар (по желанию)', photoLabelTxt:'Прикрепить фото',
+    qn8:'Ещё одно', t8:'Что бы вы сказали тому, кто ещё не решился?', s8s:'Тому, кто думает об этой работе, но сомневается.', btn8:'Продолжить →', bk8:'← Назад', sk8:'Пропустить', q9:'Обратитесь к нему/ней напрямую, если хочется…',
+    qn9:'По желанию · Почти готово', t9:'Ещё одно! Готовы ли Вы на экстра шаг 🤩?!',
+    consentlabel:'Я согласен/согласна, что Инна может использовать мой отзыв (анонимно, если имя не указано) на своём сайте или в соцсетях.',
+    btn9:'Отправить ответы →', bk9:'← Назад',
+    tth:'Готово!', bth:'Спасибо огромное, что нашли время! — Инна',
+    hdrname:'Self-Mastery Practice · Инна Шевченко'
+  }
+};
+
+function setLang(l) {
+  lang = l;
+  document.getElementById('ben').className = 'lb' + (l==='en' ? ' on' : '');
+  document.getElementById('bru').className = 'lb' + (l==='ru' ? ' on' : '');
+  var d = tx[l];
+  for (var k in d) {
+    var el = document.getElementById(k);
+    if (el) {
+      if (el.tagName === 'TEXTAREA' || el.tagName === 'INPUT') {
+        el.placeholder = d[k];
+      } else {
+        el.innerHTML = d[k];
+      }
+    }
+  }
+}
+
+function gt(n) {
+  var ce = document.getElementById('s' + cur) || document.getElementById('sth');
+  if (ce) ce.classList.remove('on');
+  if (n > total) {
+    document.getElementById('sth').classList.add('on');
+    document.getElementById('ftr').style.display = 'none';
+    document.getElementById('bar').style.width = '100%';
+    return;
+  }
+  cur = n;
+  var ne = document.getElementById('s' + cur);
+  if (ne) ne.classList.add('on');
+  var pct = cur === 0 ? 0 : Math.round(cur / total * 100);
+  document.getElementById('bar').style.width = pct + '%';
+  document.getElementById('sc').textContent = cur === 0 ? '' : cur + ' / ' + total;
+  window.scrollTo(0, 0);
+}
+
+function send() {
+  var name = document.getElementById('q7name').value || (lang === 'ru' ? 'Анонимно' : 'Anonymous');
+  var fmtEl = document.querySelector('input[name="fmt"]:checked');
+  var fmt = fmtEl ? fmtEl.value : 'not selected';
+  var fmtLabels = {'self-video':'📹 Self-recorded video','video-call':'📹 Video call','voice-call':'🎙️ Voice call','text':'✍️ Text only','not selected':'—'};
+  var consent = document.getElementById('consent').checked ? 'Yes' : 'No';
+
+  var body =
+    'Name: ' + name + '\n' +
+    'Format: ' + (fmtLabels[fmt] || fmt) + '\n' +
+    'Consent to share: ' + consent + '\n\n' +
+    '1. ' + document.getElementById('q1').value + '\n\n' +
+    '2. ' + document.getElementById('q2').value + '\n\n' +
+    '3. ' + document.getElementById('q3').value + '\n\n' +
+    '4. ' + document.getElementById('q4').value + '\n\n' +
+    '5. ' + document.getElementById('q5').value + '\n\n' +
+    '6. ' + document.getElementById('q6').value + '\n\n' +
+    '7. ' + document.getElementById('q8').value + '\n\n' +
+    (lang === 'ru' ? 'Тому, кто не решился: ' : 'For someone on the fence: ') + document.getElementById('q9').value;
+
+  var fd = new FormData();
+  fd.append('_to', 'inna.shevchenko@gmail.com');
+  fd.append('_subject', 'Client Reflection · Self-Mastery Practice');
+  fd.append('_template', 'box');
+  fd.append('_captcha', 'false');
+  fd.append('name', name);
+  fd.append('message', body);
+
+  var photoInput = document.getElementById('q7photo');
+  if (photoInput && photoInput.files && photoInput.files[0]) {
+    fd.append('attachment', photoInput.files[0]);
+  }
+
+  var btn = document.getElementById('btn9');
+  btn.textContent = lang === 'ru' ? 'Отправляем…' : 'Sending…';
+  btn.disabled = true;
+
+  fetch('https://formsubmit.co/ajax/inna.shevchenko@gmail.com', {
+    method: 'POST',
+    body: fd
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(){ gt(total + 1); })
+  .catch(function(){
+    btn.textContent = lang === 'ru' ? 'Ошибка. Попробуйте снова.' : 'Error. Please try again.';
+    btn.disabled = false;
+  });
+}
+</script>
+</body>
+</html>
