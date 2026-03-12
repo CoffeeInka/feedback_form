@@ -384,10 +384,33 @@ function send() {
     '7. ' + document.getElementById('q8').value + '\n\n' +
     (lang === 'ru' ? 'Тому, кто не решился: ' : 'For someone on the fence: ') + document.getElementById('q9').value;
 
-  var subj = encodeURIComponent('Client Reflection · Self-Mastery Practice');
-  var bodyEncoded = encodeURIComponent(body);
-  window.location.href = 'mailto:inna.shevchenko@gmail.com?subject=' + subj + '&body=' + bodyEncoded;
-  gt(total + 1);
+  var btn = document.getElementById('btn11');
+  btn.textContent = lang === 'ru' ? 'Отправляем…' : 'Sending…';
+  btn.disabled = true;
+
+  fetch('https://api.web3forms.com/submit', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+    body: JSON.stringify({
+      access_key: '5377b998-db6f-4f9e-82ae-0c2c00094b71',
+      subject: 'Client Reflection · Self-Mastery Practice',
+      from_name: name,
+      message: body,
+      email: 'amate.studio.co@gmail.com'
+    })
+  })
+  .then(function(r){ return r.json(); })
+  .then(function(res){
+    if (res.success) { gt(total + 1); }
+    else {
+      btn.textContent = lang === 'ru' ? 'Ошибка. Попробуйте снова.' : 'Error. Please try again.';
+      btn.disabled = false;
+    }
+  })
+  .catch(function(){
+    btn.textContent = lang === 'ru' ? 'Ошибка. Попробуйте снова.' : 'Error. Please try again.';
+    btn.disabled = false;
+  });
 }
 </script>
 </body>
