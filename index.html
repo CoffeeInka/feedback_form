@@ -230,6 +230,7 @@ textarea::placeholder,input::placeholder{color:var(--w);opacity:.42;font-weight:
   <div class="wt" id="tth">Done!</div>
   <div class="dv"></div>
   <div class="wb" id="bth">Thank you so much for taking the time! — Inna</div>
+  <div style="margin-top:20px;font-family:'Jost',sans-serif;font-weight:200;font-size:11px;color:var(--w);line-height:1.8" id="photonote">If you attached a photo — please send it separately via WhatsApp or Telegram.</div>
   <a href="https://selfmastery.art">selfmastery.art</a>
 </div>
 
@@ -270,7 +271,8 @@ var tx = {
     consentlabel:'I agree that Inna may use my reflection (anonymously if no name is given) on her website or social media.',
     btn9:'Send my answers →', bk9:'← Back',
     tth:'Done!', bth:'Thank you so much for taking the time! — Inna',
-    hdrname:'Self-Mastery Practice · Inna Shevchenko'
+    hdrname:'Self-Mastery Practice · Inna Shevchenko',
+    photonote:'If you attached a photo — please send it separately via WhatsApp or Telegram.'
   },
   ru: {
     t0:'Отзыв клиента',
@@ -290,7 +292,8 @@ var tx = {
     consentlabel:'Я согласен/согласна, что Инна может использовать мой отзыв (анонимно, если имя не указано) на своём сайте или в соцсетях.',
     btn9:'Отправить ответы →', bk9:'← Назад',
     tth:'Готово!', bth:'Спасибо огромное, что нашли время! — Инна',
-    hdrname:'Self-Mastery Practice · Инна Шевченко'
+    hdrname:'Self-Mastery Practice · Инна Шевченко',
+    photonote:'Если вы прикрепили фото — пожалуйста, отправьте его отдельно в WhatsApp или Telegram.'
   }
 };
 
@@ -354,11 +357,6 @@ function send() {
   fd.append('subject', 'Client Reflection · Self-Mastery Practice');
   fd.append('name', name);
   fd.append('message', body);
-
-  var photoInput = document.getElementById('q7photo');
-  if (photoInput && photoInput.files && photoInput.files[0]) {
-    fd.append('attachment', photoInput.files[0]);
-  }
 
   var btn = document.getElementById('btn9');
   btn.textContent = lang === 'ru' ? 'Отправляем…' : 'Sending…';
